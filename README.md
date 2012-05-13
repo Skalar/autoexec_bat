@@ -1,6 +1,6 @@
 # AutoexecBat
 
-AutoexecBat was written to aid organizing javascript code in Rails' asset pipeline.
+AutoexecBat was written to aid organizing and running javascript code using the Rails asset pipeline.
 
 The main idea is to organize all javascript code into separate namespaces and let a data-autoexec attribute determine which module to run.
 
