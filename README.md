@@ -2,8 +2,9 @@
 
 AutoexecBat was written to aid organizing javascript code in Rails' asset pipeline.
 
-The main idea is to organize all javascript code into separate namespaces.
-Here are some examples:
+The main idea is to organize all javascript code into separate namespaces and let a data-autoexec attribute determine which module to run.
+
+Some examples:
     
     define "App.Products", (exports) ->
         exports.autoexec = ->
