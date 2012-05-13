@@ -55,10 +55,17 @@ Finally, just add the module name to a data-autoexec attribute:
     <body data-autoexec="App.Products.Index">
         
 If the given module doesn't exist, it tries to execute a parent module.
-In this case, the module App.Products.autoexec() will be executed:
+In this case, App.Products.autoexec() will be executed:
 
     <div data-autoexec="App.Products.Dev.Null">..</div>
     
+### Auto-require
+
+If you have a module that you want to be included always, you can instruct AutoexecBat to require it:
+
+    AutoexecBat.autoRequire = "App.My.Module"
+
+Note: this will only work with modules defined with define().
 
 ## Installation
 
