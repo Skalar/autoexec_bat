@@ -1,9 +1,3 @@
-$ = jQuery
-$.fn.extend
-  autoexec: (options) ->
-    return @each -> AutoexecBat.run $(@).data('autoexec')
-
-
 window.AutoexecBat =
   topLevel: "App"
   debug: true
@@ -72,3 +66,10 @@ window.AutoexecBat =
 window.define = AutoexecBat.define
 window.require= AutoexecBat.require
 window.Namespace= AutoexecBat.namespace
+
+# Plugins
+unless typeof jQuery is 'undefined'
+  $ = jQuery
+  $.fn.extend
+    autoexec: (options) ->
+      return @each -> AutoexecBat.run $(@).data('autoexec')
