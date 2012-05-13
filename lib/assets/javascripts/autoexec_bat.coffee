@@ -1,7 +1,9 @@
-window.AutoexecBat =
+root = exports ? window
+
+AutoexecBat =
   topLevel: "App"
   debug: true
-  autoRequire: null
+  # autoRequire: null
         
   log: (msg) ->
     console?.log msg if AutoexecBat.debug
@@ -19,7 +21,7 @@ window.AutoexecBat =
         block = arg
 
     block ?= -> # empty function
-    top    = AutoexecBat.topLevel #window
+    top    = AutoexecBat.topLevel 
     target = AutoexecBat.namespace name
 
     target.name     = name
@@ -39,7 +41,7 @@ window.AutoexecBat =
     (AutoexecBat.initializeModule(lib) for lib in dependencies) if dependencies
 
   namespace: (name) ->
-    target = window
+    target = root
     target = target[item] or= {} for item in name.split '.'
     target
 
@@ -48,7 +50,7 @@ window.AutoexecBat =
     ns = ns.split "." if typeof ns is "string"
     ns.unshift AutoexecBat.topLevel unless ns[0] == AutoexecBat.topLevel
 
-    module = window
+    module = root
     for item in ns
       module = module[item] unless typeof module[item] is 'undefined'
     module
@@ -63,9 +65,10 @@ window.AutoexecBat =
 
 
 # Globals
-window.define = AutoexecBat.define
-window.require= AutoexecBat.require
-window.Namespace= AutoexecBat.namespace
+root.AutoexecBat = AutoexecBat
+root.define      = AutoexecBat.define
+root.require     = AutoexecBat.require
+root.namespace   = AutoexecBat.namespace
 
 # Plugins
 unless typeof jQuery is 'undefined'
