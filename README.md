@@ -39,11 +39,16 @@ Some examples:
     # A simple coffeescript class:
     class namespace("App.Models").Product
         # this class will be known as App.Models.Product
-        
 
+    # Run AutoexecBat on all tags with a data-autoexec attribute (using jQuery)
     jQuery ->
-        # Run AutoexecBat on all tags with a data-autoexec attribute
         $('[data-autoexec]').autoexec()
+        
+    # y u no got jquery? 
+    # Run it manually or use whatever
+    AutoexecBat.run "App.Products.Show"
+    # or 
+    App.Products.Show.autoexec()
 
 Finally, just add the module name to a data-autoexec attribute:
 
