@@ -44,11 +44,24 @@ Some examples:
     jQuery ->
         $('[data-autoexec]').autoexec()
 
+    # If you're using the jQuery plugin you can fetch the callee in the autoexec function
+    define "App.Products.Show", (exports) ->
+        exports.autoexec = (productItem) ->
+            setupEventListeners(productItem)
+
+        setupEventListeners = (productItem) ->
+            $(productItem).on 'click', -> # specific event handler
+
     # y u no got jquery?
     # Run it manually or use whatever
     AutoexecBat.run "App.Products.Show"
     # or
     App.Products.Show.autoexec()
+
+    # To push the callee to autoexec
+    AutoexecBat.run "App.Products.Show", productItem
+    # or
+    App.Products.Show.autoexec(productItem)
 
 Finally, just add the module name to a data-autoexec attribute:
 
