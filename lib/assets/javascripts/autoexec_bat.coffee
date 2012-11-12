@@ -28,11 +28,12 @@ AutoexecBat =
     target.loaded   = false
     target.autoexec = -> # make sure the autoexec function exists
     target.dependencies = dependencies
-    target.init     = (callee) ->
-      unless @loaded
+    target.init     = (options) ->
+      unless options.idempotent and @loaded
         require dependencies
-        @autoexec(callee) if typeof @autoexec is 'function'
-        @autoexec = -> AutoexecBat.log "Module already initialized"
+        @autoexec(options.callee) if typeof @autoexec is 'function'
+        if options.idempotent
+          @autoexec = -> AutoexecBat.log "Module already initialized"
         @loaded = true
 
     block target, top 
@@ -55,13 +56,13 @@ AutoexecBat =
       module = module[item] unless typeof module[item] is 'undefined'
     module
 
-  initializeModule: (nameOrModule, callee) ->
+  initializeModule: (nameOrModule, options) ->
     module = if typeof nameOrModule is "string" then AutoexecBat.findModule(nameOrModule) else nameOrModule
-    module.init(callee) if typeof module isnt 'undefined' and typeof module.init isnt 'undefined'
+    module.init(options) if typeof module isnt 'undefined' and typeof module.init isnt 'undefined'
 
-  run: (name, callee) ->
+  run: (name, options) ->
     module = AutoexecBat.findModule name
-    AutoexecBat.initializeModule module, callee
+    AutoexecBat.initializeModule module, options
 
 
 # Globals
@@ -75,4 +76,8 @@ unless typeof jQuery is 'undefined'
   $ = jQuery
   $.fn.extend
     autoexec: (options) ->
-      return @each -> AutoexecBat.run $(@).data('autoexec'), @
+      options = $.extend
+        callee: @
+        idempotent: true
+      , options
+      return @each -> AutoexecBat.run $(@).data('autoexec'), options
