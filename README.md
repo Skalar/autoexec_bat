@@ -63,6 +63,10 @@ Some examples:
     # or
     App.Products.Show.autoexec(productItem)
 
+    # If you want modules to be autoexec'd several times
+    App.Products.Show.autoexec
+        idempotent: false
+
 Finally, just add the module name to a data-autoexec attribute:
 
     <body data-autoexec="App.Products.Index">
@@ -90,8 +94,9 @@ Require your modules and activate autoexecution (with turbolinks - default in Ra
 
     #= require autoexec_bat
     #= require_tree ./folder-containing-your-modules
-    jQuery(document).bind 'ready page:change', ->
-        $('[data-autoexec]').autoexec()
+    jQuery(document).bind 'ready page:load', ->
+        $('[data-autoexec]').autoexec
+            idempotent: false
 
 For Rails 3:
 
