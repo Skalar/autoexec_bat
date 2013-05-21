@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "autoexec_bat"
   gem.require_paths = ["lib"]
   gem.version       = AutoexecBat::VERSION
+
+  gem.add_development_dependency "rake"
 end

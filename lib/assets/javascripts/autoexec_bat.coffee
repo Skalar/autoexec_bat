@@ -1,27 +1,28 @@
-root = exports ? window
-
 AutoexecBat =
   topLevel: "App"
-  debug: true
-  # autoRequire: null
-        
+  debug: false
+  autoRequire: false
+
   log: (msg) ->
     console?.log msg if AutoexecBat.debug
+
+  require: (dependencies) ->
+    (AutoexecBat.initializeModule(lib) for lib in dependencies) if dependencies
 
   define: (name) ->
     dependencies = []
     dependencies.push AutoexecBat.autoRequire if AutoexecBat.autoRequire && name != AutoexecBat.autoRequire
 
     for arg in arguments
-      if typeof arg is "object" 
+      if typeof arg is "object"
         for module in arg
           dependencies.push module unless module in dependencies && module != name
 
-      else if typeof arg is "function" 
+      else if typeof arg is "function"
         block = arg
 
     block ?= -> # empty function
-    top    = AutoexecBat.topLevel 
+    top    = AutoexecBat.topLevel
     target = AutoexecBat.namespace name
 
     target.name     = name
@@ -29,17 +30,18 @@ AutoexecBat =
     target.autoexec = -> # make sure the autoexec function exists
     target.dependencies = dependencies
     target.init     = (options) ->
+      options or=
+        idempotent: false
+        callee: null
+
       unless options.idempotent and @loaded
-        require dependencies
+        AutoexecBat.require dependencies
         @autoexec(options.callee) if typeof @autoexec is 'function'
         if options.idempotent
           @autoexec = -> AutoexecBat.log "Module already initialized"
         @loaded = true
 
-    block target, top 
-
-  require: (dependencies) ->
-    (AutoexecBat.initializeModule(lib) for lib in dependencies) if dependencies
+    block target, top
 
   namespace: (name) ->
     target = root
@@ -66,6 +68,7 @@ AutoexecBat =
 
 
 # Globals
+root = exports ? window
 root.AutoexecBat = AutoexecBat
 root.define      = AutoexecBat.define
 root.require     = AutoexecBat.require

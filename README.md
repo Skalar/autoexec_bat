@@ -105,6 +105,18 @@ For Rails 3:
     jQuery ->
         $('[data-autoexec]').autoexec()
 
+## Testing
+
+Install mocha and chai:
+
+    # npm install -g mocha coffee-script
+    # npm install chai jack
+
+And run the test suite:
+
+    # mocha -R spec --watch     (or)
+    # rake test
+
 ## Contributing
 
 1. Fork it
