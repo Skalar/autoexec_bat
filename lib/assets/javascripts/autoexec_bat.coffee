@@ -1,7 +1,7 @@
 AutoexecBat =
   topLevel: "App"
   debug: false
-  # autoRequire: null
+  autoRequire: false
 
   log: (msg) ->
     console?.log msg if AutoexecBat.debug

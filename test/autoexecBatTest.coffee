@@ -48,7 +48,16 @@ describe 'AutoexecBat', ->
         autoexec.define 'App.Bar', ["App.Bullshit"], (exports) ->
         autoexec.App.Bar.dependencies.should =~ ['App.Bullshit']
 
-      it "autoRequired modules are automatically loaded"
+    describe "autoRequire", ->
+
+      it "should be disabled by default", ->
+        autoexec.AutoexecBat.autoRequire.should.not.be.ok
+        autoexec.App.Foo.dependencies.should.be.empty
+
+      it "autoRequired modules are automatically added to the dependency list", ->
+        autoexec.AutoexecBat.autoRequire = "App.Always"
+        autoexec.define "App.Bar", -> exports.autoexec = -> 'something here'
+        autoexec.App.Bar.dependencies.should.include "App.Always"
 
 
   describe "require", ->
