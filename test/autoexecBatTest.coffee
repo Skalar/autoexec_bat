@@ -25,13 +25,20 @@ describe 'AutoexecBat', ->
   describe "define", ->
     beforeEach ->
       autoexec.define 'App.Foo', (exports) ->
-        exports.autoexec = -> "do something"
+        exports.autoexec = ->
+          "do something"
 
-    it "defines a function", ->
+        privateMethod = ->
+          'I am hidden'
+
+    it "defines a function that can be called", ->
       autoexec.App.Foo.autoexec().should.equal "do something"
 
     it "can be executed", ->
       autoexec.AutoexecBat.run('App.Foo').should.equal true
+
+    it "private methods are unavailable", ->
+      expect(autoexec.App.Foo.privateMethod).to.not.be.ok
 
     it "should not be loaded", ->
       autoexec.App.Foo.loaded.should.equal false
@@ -59,6 +66,9 @@ describe 'AutoexecBat', ->
         autoexec.define "App.Bar", -> exports.autoexec = -> 'something here'
         autoexec.App.Bar.dependencies.should.include "App.Always"
 
+    it "has support for idempotency"
+
+    it "knows the callee"
 
   describe "require", ->
     beforeEach ->
